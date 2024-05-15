@@ -22,7 +22,7 @@ public class JwtProvider {
 
     // jwt 생성
     public String create(String email) {
-        Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
+        Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));  // 1 시간
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         String jwt = Jwts.builder().signWith(key, SignatureAlgorithm.HS256).setSubject(email).setIssuedAt(new Date()).setExpiration(expiredDate).compact();
