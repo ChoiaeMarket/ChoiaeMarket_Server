@@ -1,5 +1,7 @@
 package com.choiaemarket.choiaemarket_server.entity;
 
+import com.choiaemarket.choiaemarket_server.dto.request.auth.SignUpRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -22,4 +24,15 @@ public class UserEntity {
     private String tel;
     private String gender;
     private String profileImage;
+    private boolean agreedPersonal;
+
+    public UserEntity(SignUpRequestDto dto) {
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.name = dto.getName();
+        this.nickname = dto.getNickname();
+        this.tel = dto.getTel();
+        this.gender = dto.getGender();
+        this.agreedPersonal = dto.getAgreedPersonal();
+    }
 }
