@@ -1,7 +1,6 @@
 package com.choiaemarket.choiaemarket_server.dto.response.auth;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 import com.choiaemarket.choiaemarket_server.common.ResponseCode;

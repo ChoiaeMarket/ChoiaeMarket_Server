@@ -1,7 +1,6 @@
 package com.choiaemarket.choiaemarket_server.entity;
 
 import com.choiaemarket.choiaemarket_server.entity.primaryKey.ChatPk;
-import com.choiaemarket.choiaemarket_server.entity.primaryKey.FavoritePk;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
