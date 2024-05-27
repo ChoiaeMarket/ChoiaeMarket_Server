@@ -34,5 +34,6 @@ public class UserEntity {
         this.tel = dto.getTel();
         this.gender = dto.getGender();
         this.agreedPersonal = dto.getAgreedPersonal();
+        this.profileImage = dto.getProfileImage();
     }
 }

@@ -35,4 +35,7 @@ public class SignUpRequestDto {
 
     @NotNull @AssertTrue
     private Boolean agreedPersonal;
+
+    @NotBlank
+    private String profileImage;
 }
