@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
 import com.choiaemarket.choiaemarket_server.entity.ImageEntity;
@@ -29,6 +30,28 @@ public class BoardServiceImplement implements BoardService{
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+
+    @Override
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+
+        BoardEntity boardEntity = null;
+        List<ImageEntity> imageEntities = new ArrayList<>();
+        
+        try {
+            boardEntity = boardRepository.findByBoardNumber(boardNumber);   // board 정보 가져오기
+            if (boardEntity == null) return GetBoardResponseDto.notExistBoard(); // 해당 boardNuber의 board가 없으면 notExistBoard 반환
+
+            imageEntities = imageRepository.findByBoardNumber(boardNumber); // 이미지 가져오기
+
+            
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetBoardResponseDto.success(boardEntity, imageEntities);
+    }
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {

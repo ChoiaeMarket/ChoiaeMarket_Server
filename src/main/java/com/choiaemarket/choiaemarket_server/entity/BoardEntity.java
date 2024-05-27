@@ -60,4 +60,5 @@ public class BoardEntity {
         this.writerProfileImage = profileImage;
         this.productNumber = productNumber;
     }
+
 }
