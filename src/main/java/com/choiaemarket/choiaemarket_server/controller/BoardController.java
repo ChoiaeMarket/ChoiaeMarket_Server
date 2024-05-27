@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -41,6 +42,15 @@ public class BoardController {
         @AuthenticationPrincipal String email
     ){
         ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
+        return response;
+    }
+
+    @GetMapping("/{boardNumber}/favorite")
+    public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(
+        @PathVariable("boardNumber") Integer boardNumber,
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super GetFavoriteResponseDto> response = boardService.getFavorite(boardNumber, email);
         return response;
     }
 

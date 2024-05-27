@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
 import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
@@ -96,6 +97,25 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PostBoardResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email) {
+        try {
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return GetFavoriteResponseDto.notExistUser();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return GetFavoriteResponseDto.notExistBoard();
+
+            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            boolean isFavorite = favoriteEntity != null;
+
+            return GetFavoriteResponseDto.success(isFavorite);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
     }
 
     @Override
