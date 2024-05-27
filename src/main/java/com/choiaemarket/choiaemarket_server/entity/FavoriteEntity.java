@@ -20,5 +20,10 @@ public class FavoriteEntity {
 
     @Id
     private String userEmail;
-    private String boardNumber;
+    private int boardNumber;
+
+    public FavoriteEntity(String userEmail, Integer boardNumber) {
+        this.userEmail = userEmail;
+        this.boardNumber = boardNumber;
+    }
 }

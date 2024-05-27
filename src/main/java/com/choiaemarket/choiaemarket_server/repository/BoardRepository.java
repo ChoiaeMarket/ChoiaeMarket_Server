@@ -7,5 +7,9 @@ import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer>{
+
+    boolean existsByBoardNumber(Integer boardNumber);
+    
     BoardEntity findByBoardNumber(Integer boardNumber);
+    
 }

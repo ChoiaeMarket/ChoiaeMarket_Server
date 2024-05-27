@@ -7,11 +7,14 @@ import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDt
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
 import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
+import com.choiaemarket.choiaemarket_server.entity.FavoriteEntity;
 import com.choiaemarket.choiaemarket_server.entity.ImageEntity;
 import com.choiaemarket.choiaemarket_server.entity.ProductEntity;
 import com.choiaemarket.choiaemarket_server.entity.UserEntity;
 import com.choiaemarket.choiaemarket_server.repository.BoardRepository;
+import com.choiaemarket.choiaemarket_server.repository.FavoriteRepository;
 import com.choiaemarket.choiaemarket_server.repository.ImageRepository;
 import com.choiaemarket.choiaemarket_server.repository.ProductRepository;
 import com.choiaemarket.choiaemarket_server.repository.UserRepository;
@@ -30,6 +33,7 @@ public class BoardServiceImplement implements BoardService{
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -92,6 +96,37 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PostBoardResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PutFavoriteResopnseDto> putFavorite(Integer boardNumber, String email) {
+        try {
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PutFavoriteResopnseDto.notExistUser(); // user가 존재하지 않는다면 return
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return PutFavoriteResopnseDto.notExistBoard(); // board가 존재하지 않는다면 return
+
+            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            if (favoriteEntity == null) {
+                favoriteEntity = new FavoriteEntity(email, boardNumber);
+                favoriteRepository.save(favoriteEntity);
+                boardEntity.increaseFavoriteCount();
+            }
+            else {
+                favoriteRepository.delete(favoriteEntity);
+                boardEntity.decreaseFavoriteCount();
+            }
+
+            boardRepository.save(boardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PutFavoriteResopnseDto.sucess();
     }
 
 }
