@@ -24,6 +24,8 @@ public class GetBoardResponseDto extends ResponseDto {
 	private String title;
 	private String content;
 	private int price;
+    private int chatCount;
+    private int favoriteCount;
 	private boolean sold;
 	private String writeDatetime;
 	private String writerNickname;
@@ -46,6 +48,8 @@ public class GetBoardResponseDto extends ResponseDto {
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
         this.price = boardEntity.getPrice();
+        this.chatCount = boardEntity.getChatCount();
+        this.favoriteCount = boardEntity.getFavoriteCount();
         this.sold = boardEntity.getSold();
         this.writeDatetime = boardEntity.getWriteDatetime();
         this.writerNickname = boardEntity.getWriterNickname();
