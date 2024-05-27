@@ -3,6 +3,7 @@ package com.choiaemarket.choiaemarket_server.service;
 import org.springframework.http.ResponseEntity;
 
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
@@ -13,4 +14,5 @@ public interface BoardService {
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
     ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email);
     ResponseEntity<? super PutFavoriteResopnseDto> putFavorite(Integer boardNumber, String email);
+    ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
 }

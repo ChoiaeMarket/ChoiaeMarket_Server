@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
@@ -147,6 +148,33 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PutFavoriteResopnseDto.sucess();
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
+        try {
+            
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return DeleteBoardResponseDto.notExistUser();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return DeleteBoardResponseDto.notExistBoard();
+
+            String writerEmail = boardEntity.getWriterEmail();
+            boolean isWriter = writerEmail.equals(email);
+            if (!isWriter) return DeleteBoardResponseDto.noPermission();
+
+            imageRepository.deleteByBoardNumber(boardNumber);
+            favoriteRepository.deleteByBoardNumber(boardNumber);
+            
+            boardRepository.delete(boardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return DeleteBoardResponseDto.success();
     }
 
 }
