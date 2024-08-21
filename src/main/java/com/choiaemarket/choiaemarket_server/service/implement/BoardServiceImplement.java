@@ -3,11 +3,13 @@ package com.choiaemarket.choiaemarket_server.service.implement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.choiaemarket.choiaemarket_server.dto.request.board.PatchBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
 import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
@@ -45,7 +47,7 @@ public class BoardServiceImplement implements BoardService{
         
         try {
             boardEntity = boardRepository.findByBoardNumber(boardNumber);   // board 정보 가져오기
-            if (boardEntity == null) return GetBoardResponseDto.notExistBoard(); // 해당 boardNuber의 board가 없으면 notExistBoard 반환
+            if (boardEntity == null) return GetBoardResponseDto.noExistBoard(); // 해당 boardNuber의 board가 없으면 notExistBoard 반환
 
             imageEntities = imageRepository.findByBoardNumber(boardNumber); // 이미지 가져오기
 
@@ -63,18 +65,18 @@ public class BoardServiceImplement implements BoardService{
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
-            if (!existedEmail) return PostBoardResponseDto.notExistUser();
+            if (!existedEmail) return PostBoardResponseDto.noExistUser();
 
             // 이메일을 이용해 사용자 정보를 조회
             UserEntity user = userRepository.findByEmail(email);
-            if (user == null) return PostBoardResponseDto.notExistUser();
+            if (user == null) return PostBoardResponseDto.noExistUser();
 
             String nickname = user.getNickname();   // 작성자의 닉네임을 가져오기
             String profileImage = user.getProfileImage();   // 작성자의 프로필사진을 가져오기
 
             // Product 정보를 가져오기
             ProductEntity product = productRepository.findByName(dto.getName());
-            if (product == null) return PostBoardResponseDto.notExistProduct();
+            if (product == null) return PostBoardResponseDto.noExistProduct();
 
             int productNumber = product.getProductNumber();
 
@@ -104,10 +106,10 @@ public class BoardServiceImplement implements BoardService{
     public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email) {
         try {
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return GetFavoriteResponseDto.notExistUser();
+            if (!existedUser) return GetFavoriteResponseDto.noExistUser();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null) return GetFavoriteResponseDto.notExistBoard();
+            if (boardEntity == null) return GetFavoriteResponseDto.noExistBoard();
 
             FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
             boolean isFavorite = favoriteEntity != null;
@@ -124,10 +126,10 @@ public class BoardServiceImplement implements BoardService{
         try {
 
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return PutFavoriteResopnseDto.notExistUser(); // user가 존재하지 않는다면 return
+            if (!existedUser) return PutFavoriteResopnseDto.noExistUser(); // user가 존재하지 않는다면 return
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null) return PutFavoriteResopnseDto.notExistBoard(); // board가 존재하지 않는다면 return
+            if (boardEntity == null) return PutFavoriteResopnseDto.noExistBoard(); // board가 존재하지 않는다면 return
 
             FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
             if (favoriteEntity == null) {
@@ -149,16 +151,50 @@ public class BoardServiceImplement implements BoardService{
 
         return PutFavoriteResopnseDto.sucess();
     }
+    
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return PatchBoardResponseDto.noExistBoard(); // boardNumber이 존재하지 않는다면 반환
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PatchBoardResponseDto.noExistUser();   // user가 존재하지 않으면
+            
+            String writerEmail = boardEntity.getWriterEmail();
+            boolean isWriter = writerEmail.equals(email);
+            if (!isWriter) return PatchBoardResponseDto.noPermission(); // 작성자 email과 사용자 email이 같지 않다면 noPermission으로 반환
+
+            boardEntity.patchBoard(dto);    // 수정 작업
+            boardRepository.save(boardEntity);  // 수정한 boardEntity로 다시 저장
+
+            imageRepository.deleteByBoardNumber(boardNumber);   // 원래 존재했던 boardImage를 전부 삭제
+            List<String> boardImageList = dto.getBoardImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (String image: boardImageList) {
+                ImageEntity imageEntity = new ImageEntity(boardNumber, image);
+                imageEntities.add(imageEntity);
+            }
+
+            imageRepository.saveAll(imageEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchBoardResponseDto.success();
+    }
 
     @Override
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
         try {
             
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return DeleteBoardResponseDto.notExistUser();
+            if (!existedUser) return DeleteBoardResponseDto.noExistUser();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null) return DeleteBoardResponseDto.notExistBoard();
+            if (boardEntity == null) return DeleteBoardResponseDto.noExistBoard();
 
             String writerEmail = boardEntity.getWriterEmail();
             boolean isWriter = writerEmail.equals(email);

@@ -1,5 +1,6 @@
 package com.choiaemarket.choiaemarket_server.entity;
 
+import com.choiaemarket.choiaemarket_server.dto.request.board.PatchBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 
 import jakarta.persistence.Entity;
@@ -67,5 +68,15 @@ public class BoardEntity {
 
     public void decreaseFavoriteCount() {
         this.favoriteCount--;
+    }
+
+    // 받아온 정보들로 수정
+    public void patchBoard(PatchBoardRequestDto dto) {
+        this.idol = dto.getIdol();
+        this.type = dto.getType();
+        this.name = dto.getName();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.price = dto.getPrice();
     }
 }
