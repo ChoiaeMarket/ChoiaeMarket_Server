@@ -21,12 +21,12 @@ public class PostBoardResponseDto extends ResponseDto{
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    public static ResponseEntity<ResponseDto> notExistUser(){
+    public static ResponseEntity<ResponseDto> noExistUser(){
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
 
-    public static ResponseEntity<ResponseDto> notExistProduct() {
+    public static ResponseEntity<ResponseDto> noExistProduct() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_PRODUCT, ResponseMessage.NOT_EXISTED_PRODUCT);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
