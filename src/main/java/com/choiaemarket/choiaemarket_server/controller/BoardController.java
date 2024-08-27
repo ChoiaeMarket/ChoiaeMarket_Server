@@ -12,18 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
-import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
-import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.request.board.PatchBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
-import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
 import com.choiaemarket.choiaemarket_server.service.BoardService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -41,21 +43,28 @@ public class BoardController {
     }
     
 
-    @PostMapping("")
-    public ResponseEntity<? super PostBoardResponseDto> postBoard(
-        @RequestBody @Valid PostBoardRequestDto requestBody,
-        @AuthenticationPrincipal String email
-    ){
-        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
-        return response;
-    }
-
     @GetMapping("/{boardNumber}/favorite")
     public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(
         @PathVariable("boardNumber") Integer boardNumber,
         @AuthenticationPrincipal String email
     ) {
         ResponseEntity<? super GetFavoriteResponseDto> response = boardService.getFavorite(boardNumber, email);
+        return response;
+    }
+
+    @GetMapping("/{boardNumber}/board-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList(){
+        ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
+        return response;
+    }
+    
+
+    @PostMapping("")
+    public ResponseEntity<? super PostBoardResponseDto> postBoard(
+        @RequestBody @Valid PostBoardRequestDto requestBody,
+        @AuthenticationPrincipal String email
+    ){
+        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
         return response;
     }
 

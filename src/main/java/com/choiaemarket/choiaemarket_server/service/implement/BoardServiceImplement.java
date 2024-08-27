@@ -9,14 +9,17 @@ import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
 import com.choiaemarket.choiaemarket_server.entity.BoardEntity;
+import com.choiaemarket.choiaemarket_server.entity.BoardListViewEntity;
 import com.choiaemarket.choiaemarket_server.entity.FavoriteEntity;
 import com.choiaemarket.choiaemarket_server.entity.ImageEntity;
 import com.choiaemarket.choiaemarket_server.entity.ProductEntity;
 import com.choiaemarket.choiaemarket_server.entity.UserEntity;
+import com.choiaemarket.choiaemarket_server.repository.BoardListViewRepository;
 import com.choiaemarket.choiaemarket_server.repository.BoardRepository;
 import com.choiaemarket.choiaemarket_server.repository.FavoriteRepository;
 import com.choiaemarket.choiaemarket_server.repository.ImageRepository;
@@ -38,6 +41,7 @@ public class BoardServiceImplement implements BoardService{
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final FavoriteRepository favoriteRepository;
+    private final BoardListViewRepository boardListViewRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -61,6 +65,40 @@ public class BoardServiceImplement implements BoardService{
         return GetBoardResponseDto.success(boardEntity, imageEntities);
     }
 
+    @Override
+    public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email) {
+        try {
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return GetFavoriteResponseDto.noExistUser();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return GetFavoriteResponseDto.noExistBoard();
+
+            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            boolean isFavorite = favoriteEntity != null;
+
+            return GetFavoriteResponseDto.success(isFavorite);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
+
+    
+    @Override
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+        try {
+            boardListViewEntities = boardListViewRepository.findByOrderByWriterDateTimeDesc();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetLatestBoardListResponseDto.success(null);
+    }
+    
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {
@@ -100,25 +138,6 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PostBoardResponseDto.success();
-    }
-
-    @Override
-    public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email) {
-        try {
-            boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return GetFavoriteResponseDto.noExistUser();
-
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if (boardEntity == null) return GetFavoriteResponseDto.noExistBoard();
-
-            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
-            boolean isFavorite = favoriteEntity != null;
-
-            return GetFavoriteResponseDto.success(isFavorite);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
     }
 
     @Override
