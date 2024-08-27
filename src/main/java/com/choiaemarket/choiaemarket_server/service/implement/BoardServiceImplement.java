@@ -84,19 +84,22 @@ public class BoardServiceImplement implements BoardService{
         }
     }
 
-    
     @Override
     public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
 
         List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
         try {
-            boardListViewEntities = boardListViewRepository.findByOrderByWriterDateTimeDesc();
+
+            boardListViewEntities = boardListViewRepository.findByOrderByWriteDatetimeDesc();
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
 
-        return GetLatestBoardListResponseDto.success(null);
+        return GetLatestBoardListResponseDto.success(boardListViewEntities);
+
     }
     
     @Override

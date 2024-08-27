@@ -42,7 +42,6 @@ public class BoardController {
         return response;
     }
     
-
     @GetMapping("/{boardNumber}/favorite")
     public ResponseEntity<? super GetFavoriteResponseDto> getFavorite(
         @PathVariable("boardNumber") Integer boardNumber,
@@ -52,12 +51,11 @@ public class BoardController {
         return response;
     }
 
-    @GetMapping("/{boardNumber}/board-list")
-    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList(){
+    @GetMapping("/board-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
         ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
         return response;
     }
-    
 
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
@@ -77,7 +75,7 @@ public class BoardController {
         return response;
     }
 
-    @PatchMapping("{boardNumber}")
+    @PatchMapping("/{boardNumber}")
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
         @RequestBody @Valid PatchBoardRequestDto requestBody,
         @PathVariable("boardNumber") Integer boardNumber,
