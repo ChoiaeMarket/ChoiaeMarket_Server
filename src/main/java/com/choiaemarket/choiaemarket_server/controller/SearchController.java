@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RestController
-@RequestMapping(value="/api/v1/search")
+@RequestMapping(value="/api/v1/search") 
 @RequiredArgsConstructor
 public class SearchController {
     
