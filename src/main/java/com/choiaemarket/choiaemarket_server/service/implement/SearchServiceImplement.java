@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.search.GetPopularListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.search.GetRelationListResponseDto;
 import com.choiaemarket.choiaemarket_server.repository.SearchLogRepository;
 import com.choiaemarket.choiaemarket_server.repository.resultSet.GetPopularListResultSet;
+import com.choiaemarket.choiaemarket_server.repository.resultSet.GetRelationListResultSet;
 import com.choiaemarket.choiaemarket_server.service.SearchService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,24 @@ public class SearchServiceImplement implements SearchService {
         }
 
         return GetPopularListResponseDto.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRelationListResponseDto> getRelationList(String searchWord) {
+        
+        List<GetRelationListResultSet> resultSets = new ArrayList<>();
+
+        try {
+            
+            resultSets = searchLogRepository.getRelationList(searchWord);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetRelationListResponseDto.success(resultSets);
+
     }
     
 }
