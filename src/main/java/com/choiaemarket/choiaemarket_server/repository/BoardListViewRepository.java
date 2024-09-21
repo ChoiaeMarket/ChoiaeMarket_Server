@@ -10,4 +10,5 @@ import com.choiaemarket.choiaemarket_server.entity.BoardListViewEntity;
 @Repository
 public interface BoardListViewRepository extends JpaRepository<BoardListViewEntity, Integer>{
     List<BoardListViewEntity> findByOrderByWriteDatetimeDesc();
+    List<BoardListViewEntity> findByIdolContainsOrNameContainsOrTitleContainsOrContentContainsOrderByWriteDatetimeDesc(String idol, String name, String title, String content);
 }

@@ -10,6 +10,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardRespon
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
@@ -18,12 +19,14 @@ import com.choiaemarket.choiaemarket_server.entity.BoardListViewEntity;
 import com.choiaemarket.choiaemarket_server.entity.FavoriteEntity;
 import com.choiaemarket.choiaemarket_server.entity.ImageEntity;
 import com.choiaemarket.choiaemarket_server.entity.ProductEntity;
+import com.choiaemarket.choiaemarket_server.entity.SearchLogEntity;
 import com.choiaemarket.choiaemarket_server.entity.UserEntity;
 import com.choiaemarket.choiaemarket_server.repository.BoardListViewRepository;
 import com.choiaemarket.choiaemarket_server.repository.BoardRepository;
 import com.choiaemarket.choiaemarket_server.repository.FavoriteRepository;
 import com.choiaemarket.choiaemarket_server.repository.ImageRepository;
 import com.choiaemarket.choiaemarket_server.repository.ProductRepository;
+import com.choiaemarket.choiaemarket_server.repository.SearchLogRepository;
 import com.choiaemarket.choiaemarket_server.repository.UserRepository;
 import com.choiaemarket.choiaemarket_server.service.BoardService;
 
@@ -42,6 +45,7 @@ public class BoardServiceImplement implements BoardService{
     private final ProductRepository productRepository;
     private final FavoriteRepository favoriteRepository;
     private final BoardListViewRepository boardListViewRepository;
+    private final SearchLogRepository searchLogRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -102,6 +106,34 @@ public class BoardServiceImplement implements BoardService{
 
     }
     
+    @Override
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+
+            boardListViewEntities = boardListViewRepository.findByIdolContainsOrNameContainsOrTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord, searchWord, searchWord);
+        
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
+            searchLogRepository.save(searchLogEntity);
+
+            boolean relation = preSearchWord != null;
+            if (relation) {
+                searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, relation);
+                searchLogRepository.save(searchLogEntity);
+            }
+
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+
+        }
+
+        return GetSearchBoardListResponseDto.success(boardListViewEntities);
+    }
+
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {

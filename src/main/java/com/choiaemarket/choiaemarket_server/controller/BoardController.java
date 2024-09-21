@@ -18,6 +18,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardRespon
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
@@ -25,6 +26,8 @@ import com.choiaemarket.choiaemarket_server.service.BoardService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -56,6 +59,16 @@ public class BoardController {
         ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
         return response;
     }
+
+    @GetMapping(value={"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable(value="preSearchWord", required = false) String preSearchWord
+    ) {
+        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(searchWord, preSearchWord);
+        return response;
+    }
+    
 
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
