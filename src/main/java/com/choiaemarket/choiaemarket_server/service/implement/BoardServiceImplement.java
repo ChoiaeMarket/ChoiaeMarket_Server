@@ -8,6 +8,7 @@ import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDt
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
@@ -67,6 +68,37 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return GetBoardResponseDto.success(boardEntity, imageEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetFavoriteBoardListResponseDto> getFavoriteBoardList(String email) {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+            
+            // 사용자 이메일로 좋아요한 게시물 번호 가져오기
+            List<FavoriteEntity> favoriteEntities = favoriteRepository.findByUserEmail(email);
+
+            // 좋아요한 게시물 번호 리스트 추출
+            List<Integer> favoriteBoardNumbers = favoriteEntities.stream()
+                    .map(FavoriteEntity::getBoardNumber)
+                    .toList();
+
+            // 좋아요한 게시물 번호에 해당하는 게시물 정보 가져오기
+            if (!favoriteBoardNumbers.isEmpty()) {
+                boardListViewEntities = boardListViewRepository.findByBoardNumberInOrderByWriteDatetimeDesc(favoriteBoardNumbers);
+            }
+
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+
+        }
+
+        return GetFavoriteBoardListResponseDto.success(boardListViewEntities);
+
     }
 
     @Override

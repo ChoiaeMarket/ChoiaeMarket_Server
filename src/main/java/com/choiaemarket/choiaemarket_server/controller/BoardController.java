@@ -16,6 +16,7 @@ import com.choiaemarket.choiaemarket_server.dto.request.board.PatchBoardRequestD
 import com.choiaemarket.choiaemarket_server.dto.request.board.PostBoardRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.DeleteBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
@@ -26,7 +27,6 @@ import com.choiaemarket.choiaemarket_server.service.BoardService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -60,6 +60,14 @@ public class BoardController {
         return response;
     }
 
+    @GetMapping("/favorite-list")
+    public ResponseEntity<? super GetFavoriteBoardListResponseDto> getFavoriteBoardList(
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super GetFavoriteBoardListResponseDto> response = boardService.getFavoriteBoardList(email);
+        return response;
+    }
+
     @GetMapping(value={"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearchWord}"})
     public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
         @PathVariable("searchWord") String searchWord,
@@ -69,7 +77,6 @@ public class BoardController {
         return response;
     }
     
-
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
         @RequestBody @Valid PostBoardRequestDto requestBody,
