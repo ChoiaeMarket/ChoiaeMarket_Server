@@ -13,6 +13,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteRespon
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetMyBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetUserBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
@@ -188,6 +189,29 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return GetSearchBoardListResponseDto.success(boardListViewEntities);
+    }
+    
+    @Override
+    public ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email) {
+        
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+            
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return GetUserBoardListResponseDto.noExistUser();
+
+            boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+
+        }
+
+        return GetUserBoardListResponseDto.success(boardListViewEntities);
+        
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteRespon
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetMyBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetUserBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PutFavoriteResopnseDto;
@@ -83,6 +84,14 @@ public class BoardController {
         @PathVariable(value="preSearchWord", required = false) String preSearchWord
     ) {
         ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(searchWord, preSearchWord);
+        return response;
+    }
+
+    @GetMapping("/user-board-list/{email}")
+    public ResponseEntity<? super  GetUserBoardListResponseDto> getUserBoardList(
+        @PathVariable("email") String email
+    ) {
+        ResponseEntity<? super GetUserBoardListResponseDto> response = boardService.getUserBoardList(email);
         return response;
     }
     
