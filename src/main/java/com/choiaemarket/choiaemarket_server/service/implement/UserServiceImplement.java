@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.GetSignInUserResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.user.GetUserResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.UserEntity;
 import com.choiaemarket.choiaemarket_server.repository.UserRepository;
 import com.choiaemarket.choiaemarket_server.service.UserService;
@@ -34,5 +35,24 @@ public class UserServiceImplement implements UserService {
         
         return GetSignInUserResponseDto.success(userEntity);
     }
-    
+
+    @Override
+    public ResponseEntity<? super GetUserResponseDto> getUser(String email) {
+        
+        UserEntity userEntity = null;
+
+        try {
+
+            userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return GetUserResponseDto.notExistUser();
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetUserResponseDto.success(userEntity);
+
+    }
+
 }
