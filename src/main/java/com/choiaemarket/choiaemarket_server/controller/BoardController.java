@@ -19,6 +19,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseD
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetMyBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
@@ -57,6 +58,14 @@ public class BoardController {
     @GetMapping("/board-list")
     public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
         ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
+        return response;
+    }
+
+    @GetMapping("/my-list")
+    public ResponseEntity<? super GetMyBoardListResponseDto> getMyBoardList(
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super GetMyBoardListResponseDto> response = boardService.getMyBoardList(email);
         return response;
     }
 

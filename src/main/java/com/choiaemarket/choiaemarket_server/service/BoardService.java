@@ -9,6 +9,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseD
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.board.GetMyBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PostBoardResponseDto;
@@ -19,6 +20,7 @@ public interface BoardService {
     ResponseEntity<? super GetFavoriteBoardListResponseDto> getFavoriteBoardList(String email);
     ResponseEntity<? super GetFavoriteResponseDto> getFavorite(Integer boardNumber, String email);
     ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
+    ResponseEntity<? super GetMyBoardListResponseDto> getMyBoardList(String email);
     ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord);
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
     ResponseEntity<? super PutFavoriteResopnseDto> putFavorite(Integer boardNumber, String email);
