@@ -11,7 +11,6 @@ import com.choiaemarket.choiaemarket_server.dto.response.board.GetBoardResponseD
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetFavoriteResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetLatestBoardListResponseDto;
-import com.choiaemarket.choiaemarket_server.dto.response.board.GetMyBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetSearchBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.GetUserBoardListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.board.PatchBoardResponseDto;
@@ -142,27 +141,6 @@ public class BoardServiceImplement implements BoardService{
 
     }
     
-    @Override
-    public ResponseEntity<? super GetMyBoardListResponseDto> getMyBoardList(String email) {
-
-        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
-
-        try {
-        
-            // writer_email이 사용자의 이메일과 일치하는 게시물 정보 가져오기
-            boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
-
-        } catch (Exception exception) {
-
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-
-        }
-
-        return GetMyBoardListResponseDto.success(boardListViewEntities);
-
-    }
-
     @Override
     public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
 
