@@ -5,8 +5,6 @@ public class ChatMessage {
     private String content;
     private String roomId;
 
-    // Getters and Setters
-
     public String getSenderEmail() {
         return senderEmail;
     }

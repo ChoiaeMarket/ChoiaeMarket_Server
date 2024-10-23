@@ -1,8 +1,10 @@
 package com.choiaemarket.choiaemarket_server.service;
 
-import com.choiaemarket.choiaemarket_server.entity.ChatRoomEntity;
-import com.choiaemarket.choiaemarket_server.entity.UserEntity;
+import org.springframework.http.ResponseEntity;
+
+import com.choiaemarket.choiaemarket_server.dto.request.chat.ChatRoomRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.response.chat.ChatRoomResponseDto;
 
 public interface ChatRoomService {
-    ChatRoomEntity findOrCreateChatRoom(UserEntity user1, UserEntity user2);
+    ResponseEntity<? super ChatRoomResponseDto> createChatRoom(ChatRoomRequestDto requestBody, String user1Email);
 }

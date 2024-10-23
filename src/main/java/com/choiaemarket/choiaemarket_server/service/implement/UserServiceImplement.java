@@ -106,4 +106,8 @@ public class UserServiceImplement implements UserService {
 
     }
 
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

@@ -8,6 +8,7 @@ import com.choiaemarket.choiaemarket_server.dto.response.user.GetSignInUserRespo
 import com.choiaemarket.choiaemarket_server.dto.response.user.GetUserResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.PatchNicknameResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.PatchProfileImageResponseDto;
+import com.choiaemarket.choiaemarket_server.entity.UserEntity;
 
 public interface UserService {
 
@@ -16,4 +17,5 @@ public interface UserService {
     ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String email);
     ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String email);
 
+    UserEntity getUserByEmail(String email);  // 이메일로 사용자 정보 가져오기
 }
