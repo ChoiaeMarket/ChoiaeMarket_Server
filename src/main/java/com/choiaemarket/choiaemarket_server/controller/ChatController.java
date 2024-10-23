@@ -16,7 +16,6 @@ import com.choiaemarket.choiaemarket_server.dto.chat.ChatMessage;
 import com.choiaemarket.choiaemarket_server.dto.request.chat.ChatRoomRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.ChatRoomResponseDto;
 import com.choiaemarket.choiaemarket_server.service.ChatRoomService;
-import com.choiaemarket.choiaemarket_server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class ChatController {
     
     private final ChatRoomService chatRoomService;
-    private final UserService userService;
 
     // 새로운 채팅방 생성
     @PostMapping("/room")

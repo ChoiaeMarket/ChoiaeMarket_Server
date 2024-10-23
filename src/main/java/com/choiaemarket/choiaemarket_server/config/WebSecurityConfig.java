@@ -46,6 +46,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/", "api/v1/auth/**", "/api/v1/search/**", "/file/**").permitAll()    // 해당 경로 권한 부여
                 .requestMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*").permitAll()
+                // .requestMatchers("/ws/**").permitAll()  // WebSocket 엔드포인트 예외 처리
                 .anyRequest().authenticated()   // 다른 모든 요청에 대한 인증 요구
             )
             .exceptionHandling(exceptionHandling -> exceptionHandling
