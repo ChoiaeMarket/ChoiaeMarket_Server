@@ -1,13 +1,13 @@
 package com.choiaemarket.choiaemarket_server.service.implement;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.choiaemarket.choiaemarket_server.dto.request.chat.ChatRoomRequestDto;
-import com.choiaemarket.choiaemarket_server.dto.response.chat.ChatRoomResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.request.chat.PostChatRoomRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.response.chat.GetChatRoomListResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.chat.PostChatRoomResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.ChatRoomEntity;
 import com.choiaemarket.choiaemarket_server.entity.UserEntity;
 import com.choiaemarket.choiaemarket_server.repository.ChatRoomRepository;
@@ -24,13 +24,13 @@ public class ChatRoomServiceImplement implements ChatRoomService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<? super ChatRoomResponseDto> createChatRoom(ChatRoomRequestDto requestBody, String user1Email) {
+    public ResponseEntity<? super PostChatRoomResponseDto> createChatRoom(PostChatRoomRequestDto requestBody, String user1Email) {
         try {
             UserEntity user1 = userRepository.findByEmail(user1Email);
             UserEntity user2 = userRepository.findByEmail(requestBody.getUser2Email());
 
             if (user1 == null || user2 == null) {
-                return ChatRoomResponseDto.noExistUser();
+                return PostChatRoomResponseDto.noExistUser();
             }
 
             // 채팅방이 이미 존재하는지 확인 후 없으면 새로 생성
@@ -41,11 +41,18 @@ public class ChatRoomServiceImplement implements ChatRoomService {
                     return newChatRoom;
                 });
 
-            return ChatRoomResponseDto.success(chatRoom.getId());
+            return PostChatRoomResponseDto.success(chatRoom.getId());
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ChatRoomResponseDto.databaseError();
+            return PostChatRoomResponseDto.databaseError();
         }
     }
+
+    @Override
+    public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(String userEmail) {
+        List<ChatRoomEntity> chatRooms = chatRoomRepository.findByUser1EmailOrUser2Email(userEmail, userEmail);
+        return GetChatRoomListResponseDto.success(chatRooms);
+    }
+    
 }

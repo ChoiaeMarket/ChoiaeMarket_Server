@@ -10,17 +10,17 @@ import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class ChatRoomResponseDto extends ResponseDto {
+public class PostChatRoomResponseDto extends ResponseDto {
     
     private Long chatRoomId;
 
-    private ChatRoomResponseDto(Long chatRoomId) {
+    private PostChatRoomResponseDto(Long chatRoomId) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.chatRoomId = chatRoomId;
     }
 
-    public static ResponseEntity<ChatRoomResponseDto> success(Long chatRoomId) {
-        ChatRoomResponseDto result = new ChatRoomResponseDto(chatRoomId);
+    public static ResponseEntity<PostChatRoomResponseDto> success(Long chatRoomId) {
+        PostChatRoomResponseDto result = new PostChatRoomResponseDto(chatRoomId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

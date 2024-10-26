@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatRoomRequestDto {
+public class PostChatRoomRequestDto {
     
     @NotBlank
     @Email
