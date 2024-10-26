@@ -8,8 +8,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "messages")
+@Table(name = "messages")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,59 +31,13 @@ public class MessageEntity {
     @JoinColumn(name = "sender_email")
     private UserEntity sender;
 
-    private String content;
+    private String message;
     private LocalDateTime timestamp;
 
-    // 기본 생성자
-    public MessageEntity() {}
-
-    // 필요한 생성자
-    public MessageEntity(ChatRoomEntity chatRoom, UserEntity sender, String content, LocalDateTime timestamp) {
+    public MessageEntity(ChatRoomEntity chatRoom, UserEntity sender, String message, LocalDateTime timestamp) {
         this.chatRoom = chatRoom;
         this.sender = sender;
-        this.content = content;
-        this.timestamp = timestamp;
-    }
-
-    // Getter
-    public Long getId() {
-        return id;
-    }
-
-    public ChatRoomEntity getChatRoom() {
-        return chatRoom;
-    }
-
-    public UserEntity getSender() {
-        return sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    // Setter
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setChatRoom(ChatRoomEntity chatRoom) {
-        this.chatRoom = chatRoom;
-    }
-
-    public void setSender(UserEntity sender) {
-        this.sender = sender;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
+        this.message = message;
         this.timestamp = timestamp;
     }
 }

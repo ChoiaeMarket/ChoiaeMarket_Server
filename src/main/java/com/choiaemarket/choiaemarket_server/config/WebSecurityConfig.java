@@ -60,9 +60,10 @@ public class WebSecurityConfig {
     @ Bean
     protected CorsConfigurationSource corsConfigrationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:5173"); // Vite의 localhost 포트
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true); // 인증 정보를 포함할 수 있도록 설정
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
