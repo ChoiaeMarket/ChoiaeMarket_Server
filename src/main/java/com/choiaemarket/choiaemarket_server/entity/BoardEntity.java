@@ -62,6 +62,14 @@ public class BoardEntity {
         this.productNumber = productNumber;
     }
 
+    public void setWriterNickname(String writerNickname) {
+        this.writerNickname = writerNickname;
+    }
+
+    public void setWriterProfileImage(String writerProfileImage) {
+        this.writerProfileImage = writerProfileImage;
+    }
+
     public void increaseFavoriteCount() {
         this.favoriteCount++;
     }
