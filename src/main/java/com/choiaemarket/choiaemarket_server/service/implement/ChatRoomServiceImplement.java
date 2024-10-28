@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.request.chat.PostChatRoomRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.GetChatRoomListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.PostChatRoomResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.ChatRoomEntity;
@@ -35,6 +36,7 @@ public class ChatRoomServiceImplement implements ChatRoomService {
 
             // 채팅방이 이미 존재하는지 확인 후 없으면 새로 생성
             ChatRoomEntity chatRoom = chatRoomRepository.findByUser1AndUser2(user1, user2)
+                .or(() -> chatRoomRepository.findByUser1AndUser2(user2, user1)) // 순서 바꿔서도 확인
                 .orElseGet(() -> {
                     ChatRoomEntity newChatRoom = new ChatRoomEntity(user1, user2);
                     chatRoomRepository.save(newChatRoom);
