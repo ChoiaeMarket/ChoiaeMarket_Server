@@ -1,6 +1,8 @@
 package com.choiaemarket.choiaemarket_server.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import com.choiaemarket.choiaemarket_server.dto.request.auth.SignInRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.SignUpRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.CheckCertificationResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCertificationResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCheckResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignInResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignUpResponseDto;
 import com.choiaemarket.choiaemarket_server.service.AuthService;
@@ -42,6 +45,14 @@ public class AuthController {
         @RequestBody @Valid EmailCertificationRequestDto requestBody
     ) {
         ResponseEntity<? super EmailCertificationResponseDto> response = authService.emailCertification(requestBody);
+        return response;
+    }
+
+    @GetMapping("/email-check/{email}")
+        public ResponseEntity<? super EmailCheckResponseDto> emailCheck(
+        @PathVariable("email") String email
+    ) {
+        ResponseEntity<? super EmailCheckResponseDto> response = authService.emailCheck(email);
         return response;
     }
 

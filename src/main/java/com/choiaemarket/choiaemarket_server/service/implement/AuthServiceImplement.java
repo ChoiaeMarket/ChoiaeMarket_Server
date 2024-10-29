@@ -13,6 +13,7 @@ import com.choiaemarket.choiaemarket_server.dto.request.auth.SignUpRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.CheckCertificationResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCertificationResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCheckResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignInResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignUpResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.CertificationEntity;
@@ -83,6 +84,22 @@ public class AuthServiceImplement implements AuthService{
 
         return EmailCertificationResponseDto.success();
 
+    }
+
+    
+    @Override
+    public ResponseEntity<? super EmailCheckResponseDto> emailCheck(String email) {
+        try {
+
+            boolean existedEmail = userRepository.existsByEmail(email);
+            if (existedEmail) return EmailCheckResponseDto.duplicateEmail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return EmailCheckResponseDto.success();
     }
 
     @Override
