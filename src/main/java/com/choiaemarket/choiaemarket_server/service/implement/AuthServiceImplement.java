@@ -6,10 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.common.CertificationNumber;
+import com.choiaemarket.choiaemarket_server.dto.request.auth.CheckCertificationRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.EmailCertificationRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.SignInRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.SignUpRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.auth.CheckCertificationResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCertificationResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignInResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignUpResponseDto;
@@ -34,6 +36,28 @@ public class AuthServiceImplement implements AuthService{
     private final EmailProvider emailProvider;
     
     private PasswordEncoder passwordEncode = new BCryptPasswordEncoder();
+
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
+        try {
+
+            String email = dto.getEmail();
+            String certificationNumber = dto.getCertificationNumber();
+
+            CertificationEntity certificationEntity = certificationRepository.findByEmail(email);
+            if (certificationEntity == null) return CheckCertificationResponseDto.certificationFail();
+            
+            // 인증 번호 비교
+            boolean isMatched = certificationEntity.getEmail().equals(email) && certificationEntity.getCertificationNumber().equals(certificationNumber);
+            if (!isMatched) return CheckCertificationResponseDto.certificationFail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return CheckCertificationResponseDto.success();
+    }
 
     @Override
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto) {

@@ -8,4 +8,6 @@ import com.choiaemarket.choiaemarket_server.entity.CertificationEntity;
 @Repository
 public interface CertificationRepository extends JpaRepository<CertificationEntity, String>{
     
+    CertificationEntity findByEmail(String email);
+    
 }
