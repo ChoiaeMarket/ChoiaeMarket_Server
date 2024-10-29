@@ -41,8 +41,8 @@ public class EmailProvider {
 
     private String getCertificationMessage (String certificationNumber) {
         String certificationMessage = "";
-        certificationMessage += "<h1 style='text-align'>[최애마켓] 인증메일</h1>";
-        certificationMessage += "<h3 style='text-align'>인증코드 : <strong style='font-size: 32px; letter-spacing: 8px;'>" + certificationNumber + "</strong></h3>";
+        certificationMessage += "<h1 style='text-align: center'>[최애마켓] 인증메일</h1>";
+        certificationMessage += "<h3 style='text-align: center'>인증코드 : <strong style='font-size: 32px; letter-spacing: 8px;'>" + certificationNumber + "</strong></h3>";
         return certificationMessage;
     }
 
