@@ -86,39 +86,6 @@ public class AuthServiceImplement implements AuthService{
     }
 
     @Override
-    public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
-
-        try {
-            // 제약 조건 검사 
-            String email = dto.getEmail();
-            boolean existedEmail = userRepository.existsByEmail(email);
-            if (existedEmail) return SignUpResponseDto.duplicateEmail();
-
-            String nickname = dto.getNickname();
-            boolean existedNickname = userRepository.existsByNickname(nickname);
-            if (existedNickname) return SignUpResponseDto.duplicateNickname();
-
-            String tel = dto.getTel();
-            boolean existedTel = userRepository.existsByTel(tel);
-            if (existedTel) return SignUpResponseDto.duplicateTelNumber();
-            
-            // password 암호화
-            String password = dto.getPassword();
-            String encodedPassword = passwordEncode.encode(password);
-            dto.setPassword(encodedPassword);
-
-            UserEntity userEntity = new UserEntity(dto);
-            userRepository.save(userEntity);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-
-        return SignUpResponseDto.success();
-    }
-
-    @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
         
         String token = null;
@@ -145,4 +112,40 @@ public class AuthServiceImplement implements AuthService{
     
     }
     
+    @Override
+    public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
+
+        try {
+            // 제약 조건 검사
+            String email = dto.getEmail();
+            boolean existedEmail = userRepository.existsByEmail(email);
+            if (existedEmail) return SignUpResponseDto.duplicateEmail();
+
+            String nickname = dto.getNickname();
+            boolean existedNickname = userRepository.existsByNickname(nickname);
+            if (existedNickname) return SignUpResponseDto.duplicateNickname();
+
+            String tel = dto.getTel();
+            boolean existedTel = userRepository.existsByTel(tel);
+            if (existedTel) return SignUpResponseDto.duplicateTelNumber();
+            
+            // password 암호화
+            String password = dto.getPassword();
+            String encodedPassword = passwordEncode.encode(password);
+            dto.setPassword(encodedPassword);
+
+            UserEntity userEntity = new UserEntity(dto);
+            userRepository.save(userEntity);
+
+            // 인증 번호 삭제
+            certificationRepository.deleteByEmail(email);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignUpResponseDto.success();
+    }
+
 }
