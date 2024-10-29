@@ -31,8 +31,14 @@ public class MessageServiceImplement implements MessageService {
         UserEntity sender = userRepository.findByEmail(chatMessage.getSenderEmail());
 
         if (chatRoom != null && sender != null) {
+            // 메시지 저장
             MessageEntity message = new MessageEntity(chatRoom, sender, chatMessage.getContent(), LocalDateTime.now());
             messageRepository.save(message);
+
+            // 마지막 메시지 및 타임스탬프 업데이트
+            chatRoom.setLastMessage(chatMessage.getContent());
+            chatRoom.setLastTimestamp(LocalDateTime.now());
+            chatRoomRepository.save(chatRoom); // 변경된 채팅방 정보 저장
         }
     }
 

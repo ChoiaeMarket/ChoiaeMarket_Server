@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.choiaemarket.choiaemarket_server.dto.request.chat.PostChatRoomRequestDto;
-import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.GetChatRoomListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.PostChatRoomResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.ChatRoomEntity;
@@ -54,6 +53,7 @@ public class ChatRoomServiceImplement implements ChatRoomService {
     @Override
     public ResponseEntity<? super GetChatRoomListResponseDto> getChatRoomList(String userEmail) {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findByUser1EmailOrUser2Email(userEmail, userEmail);
+
         return GetChatRoomListResponseDto.success(chatRooms);
     }
     

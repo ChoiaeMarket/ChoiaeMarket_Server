@@ -1,5 +1,7 @@
 package com.choiaemarket.choiaemarket_server.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,12 +33,24 @@ public class ChatRoomEntity {
     @JoinColumn(name = "user2_email")
     private UserEntity user2;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private java.sql.Timestamp createdAt;
+    @Column(name = "last_message", columnDefinition = "TEXT")
+    private String lastMessage; // 마지막 메시지 내용
+
+    @Column(name = "last_timestamp")
+    private LocalDateTime lastTimestamp; // 마지막 메시지 전송 시간
 
     public ChatRoomEntity(UserEntity user1, UserEntity user2) {
         this.user1 = user1;
         this.user2 = user2;
-        this.createdAt = new java.sql.Timestamp(System.currentTimeMillis());
+        this.lastMessage = null; // 초기값 null
+        this.lastTimestamp = null; // 초기값 null
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public void setLastTimestamp(LocalDateTime lastTimestamp) {
+        this.lastTimestamp = lastTimestamp;
     }
 }
