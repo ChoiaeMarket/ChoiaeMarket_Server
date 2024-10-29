@@ -15,12 +15,13 @@ public interface ResponseMessage {
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "Login information mismatch.";
-    String AUTHORIZATION_FAIL = "Authorization Failed.";
-    String CERTIFICATION_FAIL = "Certification Failed.";
+    String AUTHORIZATION_FAIL = "Authorization failed.";
+    String CERTIFICATION_FAIL = "Certification failed.";
 
     // HTTP Status 403
     String NO_PERMISSION = "Do not have permission.";
 
     // HTTP Status 500
+    String MAIL_FAIL = "Mail send failed.";
     String DATABASE_ERROR = "Database error.";
 }

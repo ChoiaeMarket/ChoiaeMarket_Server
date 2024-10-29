@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.choiaemarket.choiaemarket_server.dto.request.auth.EmailCertificationRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.SignInRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.auth.SignUpRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.response.auth.EmailCertificationResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignInResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.auth.SignUpResponseDto;
 import com.choiaemarket.choiaemarket_server.service.AuthService;
@@ -24,6 +26,14 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/email-certification")
+    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
+        @RequestBody @Valid EmailCertificationRequestDto requestBody
+    ) {
+        ResponseEntity<? super EmailCertificationResponseDto> response = authService.emailCertification(requestBody);
+        return response;
+    }
 
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(
