@@ -15,14 +15,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SignUpRequestDto {
     
-    @NotBlank @Email // 이메일 형식
+    @NotBlank
+    @Email // 이메일 형식
     private String email;
 
-    @NotBlank @Size(min=8, max=20)  // 크기 제한
+    @NotBlank
+    @Size(min=8, max=20)  // 크기 제한
+    // @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$") // 정규표현식 : 영문자, 숫자, 길이 8~20
     private String password;
 
     @NotBlank
-    private String type;
+    private String type = "app";
 
     @NotBlank
     private String name;
@@ -30,15 +33,16 @@ public class SignUpRequestDto {
     @NotBlank
     private String nickname;
 
-    @NotBlank @Pattern(regexp="^[0-9]{11,13}$") // 정규 표현식
+    @NotBlank
+    @Pattern(regexp="^[0-9]{11,13}$") // 정규 표현식
     private String tel;
 
-    @NotBlank
+    @NotNull
     private String gender;
 
-    @NotNull @AssertTrue
+    @NotNull
+    @AssertTrue
     private Boolean agreedPersonal;
 
-    @NotBlank
     private String profileImage;
 }
