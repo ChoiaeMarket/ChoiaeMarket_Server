@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.choiaemarket.choiaemarket_server.dto.chat.ChatMessage;
+import com.choiaemarket.choiaemarket_server.dto.message.ChatMessage;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.GetMessageResponseDto;
 import com.choiaemarket.choiaemarket_server.entity.ChatRoomEntity;
 import com.choiaemarket.choiaemarket_server.entity.MessageEntity;

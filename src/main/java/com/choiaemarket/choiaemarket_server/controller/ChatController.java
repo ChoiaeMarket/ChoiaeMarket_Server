@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choiaemarket.choiaemarket_server.dto.chat.ChatMessage;
+import com.choiaemarket.choiaemarket_server.dto.message.ChatMessage;
 import com.choiaemarket.choiaemarket_server.dto.request.chat.PostChatRoomRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.GetChatRoomListResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.chat.GetMessageResponseDto;

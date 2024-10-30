@@ -1,4 +1,4 @@
-package com.choiaemarket.choiaemarket_server.dto.chat;
+package com.choiaemarket.choiaemarket_server.dto.message;
 
 public class ChatMessage {
     private String senderEmail;
