@@ -30,12 +30,12 @@ public class UserEntity {
     public UserEntity(SignUpRequestDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
-        this.type = dto.getType();
+        this.type = "app";
         this.name = dto.getName();
         this.nickname = dto.getNickname();
         this.tel = dto.getTel();
         this.gender = dto.getGender();
-        this.agreedPersonal = dto.getAgreedPersonal();
+        this.agreedPersonal = true;
         this.profileImage = dto.getProfileImage();
     }
 
@@ -46,4 +46,13 @@ public class UserEntity {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+    public UserEntity (String email, String type, String name){
+        this.email = email;
+        this.password = "Password"; // 의미 없음
+        this.type = type;
+        this.name = name;
+        this.agreedPersonal = true;
+    }
+    
 }

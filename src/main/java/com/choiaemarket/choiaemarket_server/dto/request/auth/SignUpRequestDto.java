@@ -25,7 +25,7 @@ public class SignUpRequestDto {
     private String password;
 
     @NotBlank
-    private String type = "app";
+    private String type;
 
     @NotBlank
     private String name;
