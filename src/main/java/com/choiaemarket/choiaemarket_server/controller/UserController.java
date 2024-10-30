@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choiaemarket.choiaemarket_server.dto.request.user.PatchNicknameRequestDto;
+import com.choiaemarket.choiaemarket_server.dto.request.user.PatchProfileRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.request.user.PatchProfileImageRequestDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.GetSignInUserResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.GetUserResponseDto;
-import com.choiaemarket.choiaemarket_server.dto.response.user.PatchNicknameResponseDto;
+import com.choiaemarket.choiaemarket_server.dto.response.user.PatchProfileResponseDto;
 import com.choiaemarket.choiaemarket_server.dto.response.user.PatchProfileImageResponseDto;
 import com.choiaemarket.choiaemarket_server.service.UserService;
 
@@ -46,12 +46,12 @@ public class UserController {
         return response;
     }
 
-    @PatchMapping("/nickname")
-    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(
-        @RequestBody @Valid PatchNicknameRequestDto requestBody,
+    @PatchMapping("/profile")
+    public ResponseEntity<? super PatchProfileResponseDto> patchProfile(
+        @RequestBody @Valid PatchProfileRequestDto requestBody,
         @AuthenticationPrincipal String email
     ) {
-        ResponseEntity<? super PatchNicknameResponseDto> response = userService.patchNickname(requestBody, email);
+        ResponseEntity<? super PatchProfileResponseDto> response = userService.patchProfile(requestBody, email);
         return response;
     }
 

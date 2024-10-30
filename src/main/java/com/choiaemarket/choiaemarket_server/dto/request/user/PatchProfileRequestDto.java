@@ -8,9 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PatchNicknameRequestDto {
+public class PatchProfileRequestDto {
     
     @NotBlank
     private String nickname;
 
+    @NotBlank
+    private String tel;
 }

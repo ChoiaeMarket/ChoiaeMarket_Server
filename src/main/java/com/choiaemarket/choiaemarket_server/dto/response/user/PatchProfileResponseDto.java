@@ -10,14 +10,14 @@ import com.choiaemarket.choiaemarket_server.dto.response.ResponseDto;
 import lombok.Getter;
 
 @Getter
-public class PatchNicknameResponseDto extends ResponseDto {
+public class PatchProfileResponseDto extends ResponseDto {
     
-    private PatchNicknameResponseDto() {
+    private PatchProfileResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PatchNicknameResponseDto> success() {
-        PatchNicknameResponseDto result = new PatchNicknameResponseDto();
+    public static ResponseEntity<PatchProfileResponseDto> success() {
+        PatchProfileResponseDto result = new PatchProfileResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

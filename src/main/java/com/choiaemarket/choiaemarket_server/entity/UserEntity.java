@@ -43,6 +43,10 @@ public class UserEntity {
         this.nickname = nickname;
     }
 
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
