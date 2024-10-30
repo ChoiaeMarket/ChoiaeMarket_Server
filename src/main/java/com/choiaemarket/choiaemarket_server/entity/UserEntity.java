@@ -47,11 +47,14 @@ public class UserEntity {
         this.profileImage = profileImage;
     }
 
-    public UserEntity (String email, String type, String name){
+    public UserEntity (String email, String type, String name, String nickname, String tel, String gender){
         this.email = email;
         this.password = "Password"; // 의미 없음
         this.type = type;
         this.name = name;
+        this.nickname = nickname;
+        this.tel = tel;
+        this.gender = gender;
         this.agreedPersonal = true;
     }
     

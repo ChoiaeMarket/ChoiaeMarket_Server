@@ -36,19 +36,51 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
         UserEntity userEntity = null;
         String email = null;
         String name = null;
+        String nickname = null;
+        String tel = null;
+        String gender = null;
 
         if (oauthClientName.equals("kakao")) {
-            Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes().get("kakao_account");
-            email = responseMap.get("email");
-            name = responseMap.get("name");
-            userEntity = new UserEntity(email, "kakao", name);
+            Map<String, Object> responseMap = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
+            Map<String, Object> profile = (Map<String, Object>) responseMap.get("profile");
+
+            email = "kakao_" + (String) responseMap.get("email");
+            name = (String) responseMap.get("name");
+            nickname = (String) profile.get("nickname");
+            tel = ((String) responseMap.get("phone_number"))
+            .replace("+82 ", "0")
+            .replace("-", "");
+            gender = "male".equals(responseMap.get("gender")) ? "0" : "1"; // 0 : 남자, 1 : 여자
+
+            // 닉네임 중복 체크 및 고유 닉네임 생성
+            String originalNickname = nickname;
+            int count = 1;
+            while (userRepository.existsByNickname(nickname)) {
+                nickname = originalNickname + count;
+                count++;
+            }
+
+            userEntity = new UserEntity(email, "kakao", name, nickname, tel, gender);
         }
 
         if (oauthClientName.equals("naver")) {
-            Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            email = responseMap.get("email");
-            name = responseMap.get("name");
-            userEntity = new UserEntity(email, "naver", name);
+            Map<String, Object> responseMap = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+
+            email = "naver_" + (String) responseMap.get("email");
+            name = (String) responseMap.get("name");
+            nickname = (String) responseMap.get("nickname");
+            tel = ((String) responseMap.get("mobile")).replace("-", "");
+            gender = "M".equals(responseMap.get("gender")) ? "0" : "1"; // 0 : 남자, 1 : 여자
+
+            // 닉네임 중복 체크 및 고유 닉네임 생성
+            String originalNickname = nickname;
+            int count = 1;
+            while (userRepository.existsByNickname(nickname)) {
+                nickname = originalNickname + count;
+                count++;
+            }
+
+            userEntity = new UserEntity(email, "naver", name, nickname, tel, gender);
         }
 
         userRepository.save(userEntity);
