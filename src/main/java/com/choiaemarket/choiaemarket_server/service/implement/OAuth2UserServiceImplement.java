@@ -44,7 +44,8 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
             Map<String, Object> responseMap = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
             Map<String, Object> profile = (Map<String, Object>) responseMap.get("profile");
 
-            email = "kakao_" + (String) responseMap.get("email");
+            String fullEmail = (String) responseMap.get("email");
+            email = "kakao_" + fullEmail.split("@")[0];
             name = (String) responseMap.get("name");
             nickname = (String) profile.get("nickname");
             tel = ((String) responseMap.get("phone_number"))
@@ -66,7 +67,8 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
         if (oauthClientName.equals("naver")) {
             Map<String, Object> responseMap = (Map<String, Object>) oAuth2User.getAttributes().get("response");
 
-            email = "naver_" + (String) responseMap.get("email");
+            String fullEmail = (String) responseMap.get("email");
+            email = "naver_" + fullEmail.split("@")[0];
             name = (String) responseMap.get("name");
             nickname = (String) responseMap.get("nickname");
             tel = ((String) responseMap.get("mobile")).replace("-", "");
